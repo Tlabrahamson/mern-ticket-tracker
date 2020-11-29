@@ -1,7 +1,11 @@
 const express = require("express");
-const app = express();
 const dotenv = require("dotenv");
+const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
+
+// Routes
+const userRoute = require("./routes/userRoute");
 
 dotenv.config();
 
@@ -9,8 +13,15 @@ dotenv.config();
 mongoose.connect(
   process.env.DB_CONNECT,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("Connect to the DB!")
+  () => console.log("Connected to the DB!")
 );
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Route Middleware
+app.use("/api/user", userRoute);
 
 const port = process.env.PORT || 5000;
 
